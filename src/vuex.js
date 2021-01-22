@@ -33,6 +33,7 @@ const store = new Vuex.Store({
     user(context, payload) {
       context.commit('user', payload);
     },
+
     tasks(context, payload) {
       context.commit('tasks', payload);
     },
