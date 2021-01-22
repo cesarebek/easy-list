@@ -10,6 +10,7 @@
       :due_to="task.due_to"
       :id="task.id"
     />
+    <AddItem />
   </v-main>
 </template>
 
@@ -17,9 +18,10 @@
 import axios from '@/axios.js';
 import Navbar from '@/components/Navbar';
 import TaskItem from '@/components/TaskItem';
+import AddItem from '@/components/AddItem';
 
 export default {
-  components: { Navbar, TaskItem },
+  components: { Navbar, TaskItem, AddItem },
   mounted() {
     this.loadTasks();
   },
