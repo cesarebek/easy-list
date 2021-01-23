@@ -2,24 +2,13 @@
   <v-main>
     <v-container>
       <v-card color="#385F73" dark class="mx-sm-15 mx-lg-15">
-        <v-card-title
-          :class="[
-            this.completedLabel === 'Uncomplete'
-              ? 'headline text-decoration-line-through'
-              : 'headline',
-          ]"
-        >
+        <v-card-title :class="lineThroughMain">
           {{ title }}
         </v-card-title>
 
-        <v-card-subtitle
-          :class="[
-            this.completedLabel === 'Uncomplete'
-              ? 'text-decoration-line-through'
-              : '',
-          ]"
-          >{{ description }}</v-card-subtitle
-        >
+        <v-card-subtitle :class="lineThroughSub">{{
+          description
+        }}</v-card-subtitle>
 
         <v-card-actions>
           <v-switch
@@ -66,7 +55,7 @@ import axios from '@/axios.js';
 import EditDialog from '@/components/EditDialog';
 
 export default {
-  props: ['title', 'description', 'completed', 'due_to', 'id'],
+  props: ['title', 'description', 'completed', 'id'],
   components: { EditDialog },
   data() {
     return {
@@ -78,12 +67,21 @@ export default {
       return this.completed === 1 ? false : true;
     },
     completedLabel() {
-      return this.completed === 1 ? 'Uncomplete' : 'Complete';
+      return this.completedUpd === true ? 'Uncomplete' : 'Complete';
+    },
+    lineThroughMain() {
+      return this.completedUpd === true
+        ? 'headline text-decoration-line-through'
+        : 'headline';
+    },
+    lineThroughSub() {
+      return this.completedUpd === true ? 'text-decoration-line-through' : '';
     },
   },
   methods: {
     //Task Complete toggle
     async updateCompleted(id) {
+      console.log(this.completedUpd);
       const res = await axios.put(`task/${id}`, {
         completed: this.completedState,
       });

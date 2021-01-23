@@ -6,6 +6,8 @@ Vue.use(Vuex);
 const state = {
   user: null,
   tasks: [],
+  completedTasks: [],
+  unCompletedTasks: [],
 };
 
 const store = new Vuex.Store({
@@ -18,6 +20,12 @@ const store = new Vuex.Store({
     tasks: (state) => {
       return state.tasks;
     },
+    completedTasks: (state) => {
+      return state.completedTasks;
+    },
+    unCompletedTasks: (state) => {
+      return state.unCompletedTasks;
+    },
   },
 
   mutations: {
@@ -26,6 +34,12 @@ const store = new Vuex.Store({
     },
     tasks(state, payload) {
       state.tasks = payload;
+    },
+    completedTasks(state, payload) {
+      state.completedTasks = payload;
+    },
+    unCompletedTasks(state, payload) {
+      state.unCompletedTasks = payload;
     },
   },
 
@@ -36,6 +50,12 @@ const store = new Vuex.Store({
 
     tasks(context, payload) {
       context.commit('tasks', payload);
+    },
+    completedTasks(context, payload) {
+      context.commit('completedTasks', payload);
+    },
+    unCompletedTasks(context, payload) {
+      context.commit('unCompletedTasks', payload);
     },
   },
 });

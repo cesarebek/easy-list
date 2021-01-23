@@ -32,9 +32,9 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab>Running</v-tab>
-          <v-tab>Completed</v-tab>
-          <v-tab></v-tab>
+          <v-tab @click="fetchAll">All</v-tab>
+          <v-tab @click="filterCompleted">Completed</v-tab>
+          <v-tab @click="filterUncompleted">Running</v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -46,7 +46,12 @@ import axios from '@/axios.js';
 
 export default {
   data() {
-    return {};
+    return {
+      updatedTasks: [],
+    };
+  },
+  beforeUpdate() {
+    this.filterCompleted();
   },
   computed: {
     user() {
@@ -59,6 +64,48 @@ export default {
         await axios.post('user/logout');
         this.$cookies.keys().forEach((cookie) => this.$cookies.remove(cookie));
         this.$router.push('login');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async fetchAll() {
+      try {
+        const res = await axios.get('tasks');
+        const tasks = res.data.data;
+        console.log('All Tasks');
+        this.$store.dispatch('tasks', tasks);
+        this.$emit('renderAllTasks');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async filterCompleted() {
+      try {
+        const res = await axios.get('tasks');
+        const allTasks = res.data.data;
+        const completedTasks = allTasks.filter((task) => {
+          return task.completed === 1;
+        });
+        console.log('Completed Tasks');
+        this.$store.dispatch('completedTasks', completedTasks);
+        this.$emit('renderCompletedTasks');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async filterUncompleted() {
+      try {
+        const res = await axios.get('tasks');
+        const allTasks = res.data.data;
+        const unCompletedTasks = allTasks.filter((task) => {
+          return task.completed === 0;
+        });
+        console.log('Uncompleted Tasks');
+        this.$store.dispatch('unCompletedTasks', unCompletedTasks);
+        this.$emit('renderUncompletedTasks');
       } catch (e) {
         console.log(e);
       }

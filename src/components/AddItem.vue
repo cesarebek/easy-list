@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn class="ma-2 pa-10 green" dark v-bind="attrs" v-on="on" icon>
+        <v-btn class="ma-6 pa-10 green" dark v-bind="attrs" v-on="on" icon>
           <v-icon> mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -46,10 +46,9 @@ export default {
         title: this.title,
         description: this.description,
       });
-      console.log(res);
-      const tasks = await axios.get('tasks');
+      console.log(res.message);
       this.dialog = false;
-      this.$store.dispatch('tasks', tasks.data.data);
+      this.$router.push('dushboard');
     },
   },
 };
