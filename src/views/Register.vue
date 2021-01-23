@@ -63,9 +63,12 @@ export default {
           password: this.password,
         });
         console.log(res.data);
+        //Saving token in the cookies
         this.$cookies.set('access_token', res.data.token);
-        this.$store.dispatch('user', res.data.data);
-        this.$router.push('/dushboard');
+        //Setting user state
+        this.$cookies.set('user', res.data.data);
+        //Redirecting to the user dushboard
+        this.$router.push('dushboard');
       } catch (e) {
         console.log('User already exists');
       }

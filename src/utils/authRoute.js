@@ -6,6 +6,6 @@ export function authRoute(to, from, next) {
     next();
   } else {
     console.log('Please login');
-    next('login');
+    next('/login');
   }
 }

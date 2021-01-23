@@ -64,12 +64,10 @@ export default {
         });
         //Saving token in the cookies
         this.$cookies.set('access_token', res.data.token);
-        //Saving user info in the cookies
-        this.$cookies.set('user', res.data.data);
         //Setting user state
-        this.$store.dispatch('user', res.data.data);
+        this.$cookies.set('user', res.data.data);
         //Redirecting to the user dushboard
-        this.$router.push('/dushboard');
+        this.$router.push('dushboard');
       } catch (e) {
         console.log('Email or password not valid');
       }

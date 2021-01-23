@@ -48,7 +48,7 @@ export default {
       });
       console.log(res.message);
       this.dialog = false;
-      this.$router.push('dushboard');
+      this.$store.dispatch('tasks');
     },
   },
 };
