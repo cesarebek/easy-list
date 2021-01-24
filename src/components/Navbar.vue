@@ -32,9 +32,13 @@
 
       <template v-slot:extension>
         <v-tabs align-with-title>
-          <v-tab @click="goAll">All</v-tab>
-          <v-tab @click="goCompleted">Completed</v-tab>
-          <v-tab @click="goRunning">Running</v-tab>
+          <router-link to="/dushboard/all"><v-tab>All</v-tab></router-link>
+          <router-link to="/dushboard/completed"
+            ><v-tab>Completed</v-tab></router-link
+          >
+          <router-link to="/dushboard/running"
+            ><v-tab>Running</v-tab></router-link
+          >
         </v-tabs>
       </template>
     </v-app-bar>
@@ -49,29 +53,16 @@ export default {
     user() {
       return this.$cookies.get('user');
     },
-    tasks() {
-      return this.$store.getters.tasks;
-    },
   },
   methods: {
     async logout() {
       try {
         await axios.post('user/logout');
         this.$cookies.keys().forEach((cookie) => this.$cookies.remove(cookie));
-        this.$router.push('login');
+        this.$router.push('/login');
       } catch (e) {
         console.log(e);
       }
-    },
-    //Tabs handlers
-    goAll() {
-      this.$router.push('all').catch(() => {});
-    },
-    goCompleted() {
-      this.$router.push('completed').catch(() => {});
-    },
-    goRunning() {
-      this.$router.push('uncompleted').catch(() => {});
     },
   },
 };

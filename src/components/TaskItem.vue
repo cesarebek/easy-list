@@ -15,7 +15,6 @@
             inset
             :label="completedLabel"
             v-model="completedUpd"
-            :value="completed"
             @click="updateCompleted(id)"
             class="ml-5"
           ></v-switch>
@@ -51,52 +50,43 @@
 </template>
 
 <script>
-import axios from '@/axios.js';
 import EditDialog from '@/components/EditDialog';
 
 export default {
   props: ['title', 'description', 'completed', 'id'],
-  components: { EditDialog },
   data() {
     return {
       completedUpd: this.completed,
     };
   },
+  components: { EditDialog },
   computed: {
     completedState() {
       return this.completed === 1 ? false : true;
     },
     completedLabel() {
-      return this.completedUpd === true ? 'Uncomplete' : 'Complete';
+      return this.completed === 1 ? 'Uncomplete' : 'Complete';
     },
     lineThroughMain() {
-      return this.completedUpd === true
+      return this.completed === 1
         ? 'headline text-decoration-line-through'
         : 'headline';
     },
     lineThroughSub() {
-      return this.completedUpd === true ? 'text-decoration-line-through' : '';
+      return this.completed === 1 ? 'text-decoration-line-through' : '';
     },
   },
   methods: {
     //Task Complete toggle
-    async updateCompleted(id) {
-      console.log(this.completedUpd);
-      const res = await axios.put(`task/${id}`, {
+    updateCompleted() {
+      this.$store.dispatch('updateCompleted', {
+        id: this.id,
         completed: this.completedState,
       });
-      console.log(res.data.message);
-      //Refreshing list of whole tasks
-      const updTasks = await axios.get('tasks');
-      this.$store.dispatch('tasks', updTasks.data.data);
     },
-
     //Task Delete
-    async destroy(id) {
-      await axios.delete(`task/${id}`);
-      //Refreshing list of whole tasks
-      const updTasks = await axios.get('tasks');
-      this.$store.dispatch('tasks', updTasks.data.data);
+    destroy(id) {
+      this.$store.dispatch('deleteTask', id);
     },
   },
 };

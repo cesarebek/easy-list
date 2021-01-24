@@ -2,9 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Register from '@/views/Register';
 import Login from '@/views/Login';
-import Dushboard from '@/views/Dushboard';
 import { authRoute } from '@/utils/authRoute.js';
-import AllTasks from '@/components/tasks/AllTasks';
+import Dushboard from '@/views/Dushboard';
+import allTasks from '@/components/tasks/AllTasks';
 import CompletedTasks from '@/components/tasks/CompletedTasks';
 import UnCompletedTasks from '@/components/tasks/UnCompletedTasks';
 
@@ -13,19 +13,35 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/dushboard',
-    name: 'dushboard',
     component: Dushboard,
     beforeEnter: authRoute,
     children: [
-      { path: 'running', name: 'all', component: AllTasks },
-      { path: 'completed', name: 'completed', component: CompletedTasks },
-      { path: 'uncompleted', name: 'uncompleted', component: UnCompletedTasks },
-      { path: '*', redirect: 'running' },
+      {
+        path: 'all',
+        component: allTasks,
+        beforeEnter: authRoute,
+      },
+      {
+        path: 'completed',
+        component: CompletedTasks,
+        beforeEnter: authRoute,
+      },
+      {
+        path: 'running',
+        component: UnCompletedTasks,
+        beforeEnter: authRoute,
+      },
+      {
+        path: '*',
+        redirect: 'all',
+        beforeEnter: authRoute,
+      },
     ],
   },
-  { path: '/register', name: 'register', component: Register },
-  { path: '/login', name: 'login', component: Login },
-  { path: '*', redirect: '/dushboard' },
+
+  { path: '/register', component: Register },
+  { path: '/login', component: Login },
+  { path: '*', redirect: '/dushboard/all' },
 ];
 
 const router = new VueRouter({

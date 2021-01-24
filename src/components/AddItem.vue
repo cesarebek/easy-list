@@ -42,11 +42,10 @@ export default {
   },
   methods: {
     async submitTask() {
-      const res = await axios.post('task/store', {
+      await axios.post('task/store', {
         title: this.title,
         description: this.description,
       });
-      console.log(res.message);
       this.dialog = false;
       this.$store.dispatch('tasks');
     },

@@ -17,23 +17,27 @@
                 v-model="password"
                 type="password"
               ></v-text-field>
+              <v-alert type="error" v-if="error" class="text-center">
+                {{ error }}
+              </v-alert>
               <v-btn
                 class="success py-xs-5 mb-3 text-capitalize"
                 block
                 rounded
                 @click="login"
-                >Login</v-btn
-              >
+                >Login
+              </v-btn>
               <p class="text-center ma-3 ">don't have an account yet?</p>
               <div block class="text-center">
-                <v-btn
-                  class="primary px-10 text-capitalize"
-                  width="50%"
-                  rounded
-                  @click="signUp"
-                >
-                  Signup for Free!
-                </v-btn>
+                <router-link to="/register"
+                  ><v-btn
+                    class="primary px-10 text-capitalize"
+                    width="50%"
+                    rounded
+                  >
+                    Signup for Free!
+                  </v-btn>
+                </router-link>
               </div>
             </v-form>
           </v-card>
@@ -44,36 +48,22 @@
 </template>
 
 <script>
-import axios from '@/axios.js';
+// import axios from '@/axios.js';
 
 export default {
   data() {
     return {
       email: '',
       password: '',
-      isLoading: false,
+      error: null,
     };
   },
   methods: {
     async login() {
-      try {
-        this.isLoading = true;
-        const res = await axios.post('login', {
-          email: this.email,
-          password: this.password,
-        });
-        //Saving token in the cookies
-        this.$cookies.set('access_token', res.data.token);
-        //Setting user state
-        this.$cookies.set('user', res.data.data);
-        //Redirecting to the user dushboard
-        this.$router.push('dushboard');
-      } catch (e) {
-        console.log('Email or password not valid');
-      }
-    },
-    signUp() {
-      this.$router.push('register');
+      await this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password,
+      });
     },
   },
 };

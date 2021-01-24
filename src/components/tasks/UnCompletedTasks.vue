@@ -1,19 +1,24 @@
 <template>
   <v-main>
-    <TaskItem
-      v-for="task in unCompletedTasks"
-      :key="task.id"
-      :title="task.title"
-      :description="task.description"
-      :completed="task.completed"
-      :id="task.id"
-    />
-    <v-alert
-      type="info"
-      v-if="this.unCompletedTasks.length === 0"
-      class="text-center"
-      >Any uncompleted tasks. Good job!
-    </v-alert>
+    <v-container>
+      <TaskItem
+        v-for="task in unCompletedTasks"
+        :key="task.id"
+        :title="task.title"
+        :description="task.description"
+        :completed="task.completed"
+        :id="task.id"
+      />
+      <v-alert
+        type="info"
+        class="text-center"
+        v-if="
+          unCompletedTasks.length === 0 || unCompletedTasks.length === undefined
+        "
+      >
+        Good job, all tasks are done!
+      </v-alert>
+    </v-container>
   </v-main>
 </template>
 
