@@ -33,10 +33,10 @@
       <template v-slot:extension>
         <v-tabs align-with-title>
           <router-link to="/dushboard/all"><v-tab>All</v-tab></router-link>
-          <router-link to="/dushboard/completed"
+          <router-link class="mytext" to="/dushboard/completed"
             ><v-tab>Completed</v-tab></router-link
           >
-          <router-link to="/dushboard/running"
+          <router-link class="mytext" to="/dushboard/running"
             ><v-tab>Running</v-tab></router-link
           >
         </v-tabs>
@@ -67,3 +67,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.mytext {
+  text-decoration: none;
+  color: white;
+}
+</style>

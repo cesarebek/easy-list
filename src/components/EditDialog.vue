@@ -14,7 +14,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-text-field label="Title" v-model="titleUpd"></v-text-field>
+          <v-text-field label="Title" v-model.trim="titleUpd"></v-text-field>
           <v-text-field
             label="Description"
             v-model="descriptionUpd"
@@ -25,7 +25,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn block class="success" @click="save(id)">
+          <v-btn block class="success" @click="save(id)" :disabled="check">
             <v-icon left>mdi-check-circle</v-icon> Save
           </v-btn>
         </v-card-actions>
@@ -45,6 +45,11 @@ export default {
       descriptionUpd: this.description,
       dialog: false,
     };
+  },
+  computed: {
+    check() {
+      return this.titleUpd === '';
+    },
   },
   methods: {
     async save(id) {

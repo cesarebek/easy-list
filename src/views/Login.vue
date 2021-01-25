@@ -48,7 +48,7 @@
 </template>
 
 <script>
-// import axios from '@/axios.js';
+import axios from '@/axios.js';
 
 export default {
   data() {
@@ -60,10 +60,17 @@ export default {
   },
   methods: {
     async login() {
-      await this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password,
-      });
+      try {
+        const res = await axios.post('login', {
+          email: this.email,
+          password: this.password,
+        });
+        this.$cookies.set('access_token', res.data.token);
+        this.$cookies.set('user', res.data.data);
+        this.$router.push('/dushboard/all');
+      } catch (e) {
+        this.error = e.response.data.message;
+      }
     },
   },
 };

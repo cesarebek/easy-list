@@ -13,15 +13,16 @@
         </v-card-title>
 
         <v-card-text class="px-10 py-5">
-          <v-text-field label="Title" block v-model="title"> </v-text-field>
-          <v-text-field label="Description" block v-model="description">
+          <v-text-field label="Title" block v-model.trim="title">
+          </v-text-field>
+          <v-text-field label="Description" block v-model.trim="description">
           </v-text-field>
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn class="success" @click="submitTask" block>
+          <v-btn class="success" @click="submitTask" :disabled="check" block>
             <v-icon left>mdi-check-circle</v-icon> Add Task
           </v-btn>
         </v-card-actions>
@@ -39,6 +40,11 @@ export default {
       description: '',
       dialog: false,
     };
+  },
+  computed: {
+    check() {
+      return this.title === '';
+    },
   },
   methods: {
     async submitTask() {

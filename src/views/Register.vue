@@ -68,9 +68,9 @@ export default {
         //Setting user state
         this.$cookies.set('user', res.data.data);
         //Redirecting to the user dushboard
-        this.$router.push('dushboard');
+        this.$router.push('/dushboard/all');
       } catch (e) {
-        console.log('User already exists');
+        this.error = e.response.data.message;
       }
     },
     login() {

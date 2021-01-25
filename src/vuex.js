@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from '@/axios.js';
-import cookies from 'vue-cookies';
-import router from '@/router';
 
 Vue.use(Vuex);
 
@@ -50,19 +48,29 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    async user({ commit }) {
-      const res = await axios.get('user');
-      const user = await res.data.data;
-      commit('user', user);
-    },
+    //Set isLoading
     isLoading({ commit }) {
       commit('isLoading', status);
     },
+    async user({ commit }) {
+      try {
+        const res = await axios.get('user');
+        const user = await res.data.data;
+        commit('user', user);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     //All tasks
-    async tasks({ commit }) {
-      const res = await axios.get('tasks');
-      const tasks = await res.data.data;
-      commit('tasks', tasks);
+    async tasks({ dispatch, commit }) {
+      try {
+        dispatch('isLoading', true);
+        const res = await axios.get('tasks');
+        commit('tasks', res.data.data);
+        dispatch('isLoading', false);
+      } catch (e) {
+        console.log(e);
+      }
     },
     //Update complete status
     async updateCompleted({ dispatch }, payload) {
@@ -77,20 +85,9 @@ const store = new Vuex.Store({
     },
     //Delete tasks
     async deleteTask({ dispatch }, id) {
-      await axios.delete(`task/${id}`);
-      dispatch('tasks');
-    },
-    //Login
-    async login({ commit }, payload) {
       try {
-        const res = await axios.post('login', {
-          email: payload.email,
-          password: payload.password,
-        });
-        cookies.set('access_token', res.data.token);
-        cookies.set('user', res.data.data);
-        router.push('/dushboard/all');
-        commit('user', res.data.data);
+        await axios.delete(`task/${id}`);
+        dispatch('tasks');
       } catch (e) {
         console.log(e);
       }
